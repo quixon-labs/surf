@@ -37,13 +37,15 @@ run:
 check: 
 	@$(call cargo,check --all-features)
 
-.PHONY: publish
-publish:
+.PHONY: fmt
+fmt:
 	@set -e
 	cargo +$(CARGO_TOOLCHAIN) fmt
 	cargo +$(CARGO_TOOLCHAIN) clippy
-	cargo +$(CARGO_TOOLCHAIN) publish
 
+.PHONY: publish
+publish: fmt
+	@cargo +$(CARGO_TOOLCHAIN) publish
 
 define cargo =
 set -e

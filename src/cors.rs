@@ -3,7 +3,7 @@ use http::{header::HeaderValue, HeaderMap, Method, Response, StatusCode};
 use http_service::Body;
 use tide::{middleware::RequestContext, Middleware};
 
-/// A blanket CORS middleware. It's customizable, but currently, 
+/// A blanket CORS middleware. It's customizable, but currently,
 /// it's a simple blanket impl for the route tree than dynamic.
 pub struct CorsBlanketMiddleware {
     // TODO: Switch to HeaderValue
@@ -25,7 +25,6 @@ impl Default for CorsBlanketMiddleware {
 }
 
 impl CorsBlanketMiddleware {
-
     pub const DEFAULT_MAX_AGE: &'static str = "86400"; // 24h => 24 * 60 * 60
     pub const DEFAULT_METHODS: &'static str = "GET, POST, OPTIONS";
     pub const STAR: &'static str = "*";
@@ -39,22 +38,22 @@ impl CorsBlanketMiddleware {
     pub fn new() -> Self {
         CorsBlanketMiddleware::default()
     }
-    
+
     pub fn max_age<S: Into<String>>(mut self, max_age: S) -> Self {
         self.max_age = max_age.into();
         self
     }
-    
+
     pub fn methods<S: Into<String>>(mut self, methods: S) -> Self {
         self.methods = methods.into();
         self
     }
-    
+
     pub fn origin<S: Into<String>>(mut self, origin: S) -> Self {
         self.origin = origin.into();
         self
     }
-    
+
     pub fn headers<S: Into<String>>(mut self, headers: S) -> Self {
         self.headers = headers.into();
         self
