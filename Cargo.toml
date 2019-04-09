@@ -1,0 +1,11 @@
+[package]
+name = "surf"
+version = "0.0.5"
+authors = ["Prasanna Loganathar <pvl@prasannavl.com>"]
+edition = "2018"
+
+[dependencies]
+tide = "0.0.5"
+http = "0.1.17"
+http-service = "0.1.4"
+futures-preview = "0.3.0-alpha.13"
