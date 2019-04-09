@@ -3,6 +3,13 @@ name = "surf"
 version = "0.0.5"
 authors = ["Prasanna Loganathar <pvl@prasannavl.com>"]
 edition = "2018"
+description = "Helpers and middleware collection for tide"
+homepage = "https://github.com/quixon-labs/surf"
+repository = "https://github.com/quixon-labs/surf"
+readme = "README.md"
+keywords = [ "tide", "middleware", "helpers", "utils" ]
+categories = [ "network-programming", "web-programming" ]
+license = "Apache-2.0"
 
 [dependencies]
 tide = "0.0.5"
