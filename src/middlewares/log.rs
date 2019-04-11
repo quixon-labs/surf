@@ -30,6 +30,9 @@ impl RequestLogger {
         &'a self,
         ctx: RequestContext<'a, Data>,
     ) -> tide::Response {
+        // TODO: Think of how to abstrct this cleanly, so it 
+        // can be reused for different config like timer, and
+        // custom formatter
         let path = ctx.req.uri().path().to_owned();
         let method = ctx.req.method().as_str().to_owned();
         trace!("IN => {} {}", method, path);
