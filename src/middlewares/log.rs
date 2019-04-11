@@ -5,8 +5,9 @@ use tide::{middleware::RequestContext, Middleware};
 /// A simple requests logger
 #[derive(Debug, Clone)]
 pub struct RequestLogger {
-    timer_on: bool, // TODO: formatter
-                    // formatter: Box<?>
+    timer_on: bool,
+    // TODO: formatter
+    // formatter: Box<?>
 }
 
 impl Default for RequestLogger {
