@@ -61,22 +61,10 @@ impl<Data: Clone + Send> Middleware<Data> for CorsBlanket {
                 if ctx.req.method() == Method::OPTIONS {
                     return Response::builder()
                         .status(StatusCode::OK)
-                        .header(
-                            header::ACCESS_CONTROL_ALLOW_ORIGIN,
-                            self.origin.clone(),
-                        )
-                        .header(
-                            header::ACCESS_CONTROL_ALLOW_METHODS,
-                            self.methods.clone(),
-                        )
-                        .header(
-                            header::ACCESS_CONTROL_ALLOW_HEADERS,
-                            self.headers.clone(),
-                        )
-                        .header(
-                            header::ACCESS_CONTROL_MAX_AGE,
-                            self.max_age.clone(),
-                        )
+                        .header(header::ACCESS_CONTROL_ALLOW_ORIGIN, self.origin.clone())
+                        .header(header::ACCESS_CONTROL_ALLOW_METHODS, self.methods.clone())
+                        .header(header::ACCESS_CONTROL_ALLOW_HEADERS, self.headers.clone())
+                        .header(header::ACCESS_CONTROL_MAX_AGE, self.max_age.clone())
                         .body(Body::empty())
                         .unwrap();
                 }
