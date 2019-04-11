@@ -6,5 +6,6 @@ Helpers and middleware collection for [tide](https://github.com/rustasync/tide)
 
 ### Current features
 
-- Blanket CORS
+- Logging middleware
+- CORS Blanket middleware
 
