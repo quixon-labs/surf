@@ -27,6 +27,6 @@ A blanket middleware for Cors.
 ```rust
 use surf::middlewares;
 app.middleware(middlewares::cors::CorsBlanket::new()
-     .origin(HeaderValue::from_str("https://surf-with-the-tide"))
-     .max_age(HeaderValue::from_str("600")));
+     .origin(HeaderValue::from_str("https://surf-with-the-tide").unwrap())
+     .max_age(HeaderValue::from_str("600").unwrap()));
 ```
