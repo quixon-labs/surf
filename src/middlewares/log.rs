@@ -1,6 +1,9 @@
 use futures::future::FutureObj;
 use log::{info, trace};
-use tide::{middleware::RequestContext, Middleware};
+use tide::{
+    middleware::{Middleware, Next},
+    Context,
+};
 
 /// A simple requests logger
 #[derive(Debug, Clone)]
@@ -26,18 +29,19 @@ impl RequestLogger {
         self
     }
 
-    async fn log_basic<'a, Data: Clone + Send>(
+    async fn log_basic<'a, Data: Send + Sync + 'static>(
         &'a self,
-        ctx: RequestContext<'a, Data>,
+        ctx: Context<Data>,
+        next: Next<'a, Data>,
     ) -> tide::Response {
         // TODO: Think of how to abstrct this cleanly, so it
         // can be reused for different config like timer, and
         // custom formatter
-        let path = ctx.req.uri().path().to_owned();
-        let method = ctx.req.method().as_str().to_owned();
+        let path = ctx.uri().path().to_owned();
+        let method = ctx.method().as_str().to_owned();
         trace!("IN => {} {}", method, path);
         let start = std::time::Instant::now();
-        let res = await!(ctx.next());
+        let res = await!(next.run(ctx));
         let status = res.status();
         if self.timer_on {
             info!(
@@ -54,8 +58,12 @@ impl RequestLogger {
     }
 }
 
-impl<Data: Clone + Send> Middleware<Data> for RequestLogger {
-    fn handle<'a>(&'a self, ctx: RequestContext<'a, Data>) -> FutureObj<'a, tide::Response> {
-        FutureObj::new(Box::new(self.log_basic(ctx)))
+impl<Data: Send + Sync + 'static> Middleware<Data> for RequestLogger {
+    fn handle<'a>(
+        &'a self,
+        ctx: Context<Data>,
+        next: Next<'a, Data>,
+    ) -> FutureObj<'a, tide::Response> {
+        box_async! { await!(self.log_basic(ctx, next)) }
     }
 }

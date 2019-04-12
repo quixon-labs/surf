@@ -1,7 +1,10 @@
 use futures::future::FutureObj;
 use http::{header::HeaderValue, HeaderMap, Method, Response, StatusCode};
 use http_service::Body;
-use tide::{middleware::RequestContext, Middleware};
+use tide::{
+    middleware::{Middleware, Next},
+    Context,
+};
 
 /// A blanket CORS middleware. It's customizable, but currently,
 /// it's a simple blanket impl for the route tree than dynamic.
@@ -53,29 +56,31 @@ impl CorsBlanket {
     }
 }
 
-impl<Data: Clone + Send> Middleware<Data> for CorsBlanket {
-    fn handle<'a>(&'a self, ctx: RequestContext<'a, Data>) -> FutureObj<'a, tide::Response> {
+impl<Data: Send + Sync + 'static> Middleware<Data> for CorsBlanket {
+    fn handle<'a>(
+        &'a self,
+        ctx: Context<Data>,
+        next: Next<'a, Data>,
+    ) -> FutureObj<'a, tide::Response> {
         use http::header;
-        FutureObj::new(Box::new(
-            async move {
-                if ctx.req.method() == Method::OPTIONS {
-                    return Response::builder()
-                        .status(StatusCode::OK)
-                        .header(header::ACCESS_CONTROL_ALLOW_ORIGIN, self.origin.clone())
-                        .header(header::ACCESS_CONTROL_ALLOW_METHODS, self.methods.clone())
-                        .header(header::ACCESS_CONTROL_ALLOW_HEADERS, self.headers.clone())
-                        .header(header::ACCESS_CONTROL_MAX_AGE, self.max_age.clone())
-                        .body(Body::empty())
-                        .unwrap();
-                }
-                let mut res = await!(ctx.next());
-                let headers: &mut HeaderMap = res.headers_mut();
-                headers
-                    .entry(header::ACCESS_CONTROL_ALLOW_ORIGIN)
-                    .unwrap()
-                    .or_insert(self.origin.clone());
-                res
-            },
-        ))
+        box_async! {
+            if ctx.method() == Method::OPTIONS {
+                return Response::builder()
+                    .status(StatusCode::OK)
+                    .header(header::ACCESS_CONTROL_ALLOW_ORIGIN, self.origin.clone())
+                    .header(header::ACCESS_CONTROL_ALLOW_METHODS, self.methods.clone())
+                    .header(header::ACCESS_CONTROL_ALLOW_HEADERS, self.headers.clone())
+                    .header(header::ACCESS_CONTROL_MAX_AGE, self.max_age.clone())
+                    .body(Body::empty())
+                    .unwrap();
+            }
+            let mut res = await!(next.run(ctx));
+            let headers: &mut HeaderMap = res.headers_mut();
+            headers
+                .entry(header::ACCESS_CONTROL_ALLOW_ORIGIN)
+                .unwrap()
+                .or_insert(self.origin.clone());
+            res
+        }
     }
 }

@@ -1,6 +1,6 @@
 [package]
 name = "surf"
-version = "0.0.8"
+version = "0.0.9"
 authors = ["Prasanna Loganathar <pvl@prasannavl.com>"]
 edition = "2018"
 description = "Helpers and middleware collection for tide"
@@ -12,7 +12,7 @@ categories = [ "network-programming", "web-programming" ]
 license = "Apache-2.0"
 
 [dependencies]
-tide = "0.0.5"
+tide = { git = "https://github.com/rustasync/tide" }
 http = "0.1.17"
 http-service = "0.1.4"
 futures-preview = "0.3.0-alpha.13"
