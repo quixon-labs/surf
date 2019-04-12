@@ -1,6 +1,6 @@
 [package]
 name = "surf"
-version = "0.0.7"
+version = "0.0.8"
 authors = ["Prasanna Loganathar <pvl@prasannavl.com>"]
 edition = "2018"
 description = "Helpers and middleware collection for tide"
