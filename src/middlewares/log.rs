@@ -6,6 +6,15 @@ use tide::{
 };
 
 /// A simple requests logger
+///
+/// # Examples
+///
+/// ```rust
+/// use surf::middlewares;
+/// 
+/// let mut app = tide::App::new(());
+/// app.middleware(middlewares::log::RequestLogger::new().timed());
+/// ```
 #[derive(Debug, Clone)]
 pub struct RequestLogger {
     timer_on: bool,

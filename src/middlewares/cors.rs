@@ -8,6 +8,19 @@ use tide::{
 
 /// A blanket CORS middleware. It's customizable, but currently,
 /// it's a simple blanket impl for the route tree than dynamic.
+///
+/// # Examples
+///
+/// ```rust
+/// use surf::middlewares;
+/// use http::header::HeaderValue;
+/// 
+/// let mut app = tide::App::new(()); 
+/// app.middleware(middlewares::cors::CorsBlanket::new()
+///      .origin(HeaderValue::from_str("https://surf-with-the-tide").unwrap())
+///      .max_age(HeaderValue::from_str("600").unwrap()));
+/// ```
+///
 pub struct CorsBlanket {
     max_age: HeaderValue,
     methods: HeaderValue,
