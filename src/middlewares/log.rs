@@ -11,7 +11,7 @@ use tide::{
 ///
 /// ```rust
 /// use surf::middlewares;
-/// 
+///
 /// let mut app = tide::App::new(());
 /// app.middleware(middlewares::log::RequestLogger::new().timed());
 /// ```

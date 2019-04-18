@@ -14,13 +14,14 @@ use tide::{
 /// ```rust
 /// use surf::middlewares;
 /// use http::header::HeaderValue;
-/// 
-/// let mut app = tide::App::new(()); 
+///
+/// let mut app = tide::App::new(());
 /// app.middleware(middlewares::cors::CorsBlanket::new()
 ///      .origin(HeaderValue::from_str("https://surf-with-the-tide").unwrap())
 ///      .max_age(HeaderValue::from_str("600").unwrap()));
 /// ```
 ///
+#[derive(Debug, Clone)]
 pub struct CorsBlanket {
     max_age: HeaderValue,
     methods: HeaderValue,

@@ -1,6 +1,6 @@
 [package]
 name = "surf"
-version = "0.0.9"
+version = "0.0.10"
 authors = ["Prasanna Loganathar <pvl@prasannavl.com>"]
 edition = "2018"
 description = "Helpers and middleware collection for tide"
@@ -12,13 +12,13 @@ categories = [ "network-programming", "web-programming" ]
 license = "Apache-2.0"
 
 [dependencies]
-tide = { git = "https://github.com/rustasync/tide" }
+tide = "0.1.1"
 http = "0.1.17"
-http-service = "0.1.4"
-futures-preview = "0.3.0-alpha.13"
+http-service = "0.1.5"
+futures-preview = "0.3.0-alpha.14"
 lazy_static = "1.3.0"
 bytes = "0.4.12"
 log = "0.4.6"
 
 [dev-dependencies]
-http-service-mock = "0.1.0"
+http-service-mock = "0.1.1"
